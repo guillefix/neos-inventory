@@ -55,4 +55,4 @@ def run(server_class=HTTPServer, handler_class=S, port=80):
     print('Starting httpd...')
     httpd.serve_forever()
 
-run(port=42069)
+run(port=6969)
