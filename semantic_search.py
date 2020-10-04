@@ -1,22 +1,13 @@
-from http.server import BaseHTTPRequestHandler, HTTPServer
-import re
-
-# import json
-# records = json.loads(open("InventoryScrap.txt","r",encoding="utf-8").read())
-#
-# len(records)
-#
-# # things = list(map(lambda x: x["tags"], records))
-# #%%
-# # records = list(filter(lambda x: x["recordType"]=="object",records))
-# # things = list(map(lambda x: x["tags"], records))
-# records = list(filter(lambda x: x["RecordType"]=="object",records))
-# things = list(map(lambda x: x["Tags"], records))
-# # things2 = list(map(lambda x: x["Name"], records))
-# things2 = list(map(lambda x: sum(map(lambda y: list(map(lambda z: z.lower().strip(), re.split(' |-|_',y))),x["Path"].split("\\")),[]), records))
-
 from sentence_transformers import SentenceTransformer
 model = SentenceTransformer('distilbert-base-nli-mean-tokens')
+sentences = ['This framework generates embeddings for each input sentence',
+    'Sentences are passed as a list of string.',
+    'The quick brown fox jumps over the lazy dog.']
+sentence_embeddings = model.encode(sentences)
+for sentence, embedding in zip(sentences, sentence_embeddings):
+    print("Sentence:", sentence)
+    print("Embedding:", embedding)
+    print("")
 
 from fuzzywuzzy import fuzz
 from fuzzywuzzy import process
@@ -53,10 +44,10 @@ def search(query_str,n=3,fuzzy_weight=0.5):
     scores,indices = query(query_embedding,sentence_embeddings,n)
     # results1 = [(i,1+scores[i]/32) for i in indices]
     results1 = Counter({i:(1+scores[i]/32)**2 for i in indices})
-    # print([things2[i] for i in indices])
+    print([things2[i] for i in indices])
     # process.extract("multitool", things2, limit=n)
     results2 = process.extract(query_str, {i:x for i,x in enumerate(things2)}, limit=n)
-    # print(results2)
+    print(results2)
     results2 = Counter({x[2]:(fuzzy_weight*x[1]/100)**2 for x in results2})
     for key,value in list(results1.most_common()):
         # if key not in results2:
@@ -71,48 +62,38 @@ def search(query_str,n=3,fuzzy_weight=0.5):
     # for key,value in list(results2.most_common()):
     #     results[key] = np.maximum(results1[key],value) + results1[key] + value
     results = results1 + results2
-    return [key for key,value in results.most_common(n)]
+    return [things2[key] for key,value in results.most_common(n)]
 
-# things[0]
+# np.where(["multitool" in t.lower() for t in things2])
 
-import numpy as np
-#%%
+records[23]
+# things2[5610]
 
-class S(BaseHTTPRequestHandler):
-    def _set_headers(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
+search("H3 multitool",10)
+search("plant",30)
+search("wallet",30)
 
-    def do_GET(self):
-        print(self.path)
-        self._set_headers()
-        query=self.path[1:]
-        results_ids=[]
-        results_str=""
-        # for i,thing in enumerate(things):
-        #     if query.lower() in thing or query.lower() in things2[i]:
-        indices = search(query.lower(),100)
-        for i in indices:
-            results_ids.append(i)
-            results_str += records[i]["ThumbnailURI"].split(".")[0]+"|"+records[i]["AssetURI"].split(".")[0]+","
+search("wet",10)
 
-        # i = np.random.choice(results)
+search("happiness",10)
 
-        self.wfile.write(bytes(str(results_str), "utf-8"))
+search("do not open this",10)
 
-    def do_HEAD(self):
-        self._set_headers()
+search("how do i go there",10)
 
-    def do_POST(self):
-        # Doesn't do anything with posted data
-        self._set_headers()
-        self.wfile.write(bytes("<html><body><h1>POST!</h1></body></html>", "utf-8"))
+search("drink",10)
 
-def run(server_class=HTTPServer, handler_class=S, port=80):
-    server_address = ('', port)
-    httpd = server_class(server_address, handler_class)
-    print('Starting httpd...')
-    httpd.serve_forever()
+search("superman vs",10)
 
-run(port=42069)
+search("egypt",10)
+
+search("canada",10)
+
+search("a thing to calculate with numbers",10)
+
+search("transistor",10)
+
+search("",20)
+
+
+fuzz.ratio("this is a test", "this is a test!aaaaaaaaaaaaaaaaaaaaaaaaaa")

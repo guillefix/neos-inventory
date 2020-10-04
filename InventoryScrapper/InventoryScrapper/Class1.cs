@@ -9,6 +9,7 @@ using System.Reflection;
 using System.Runtime.CompilerServices;
 using Newtonsoft.Json;
 using BaseX;
+using System.Threading;
 
 namespace FrooxEngine.LogiX
 {
@@ -23,6 +24,7 @@ namespace FrooxEngine.LogiX
         HashSet<string> folderIds;
         HashSet<RecordDirectory> folders;
         System.IO.StreamWriter file;
+        public bool is_fist_time;
         protected override void OnAttach()
         {
             base.OnAttach();
@@ -50,6 +52,7 @@ namespace FrooxEngine.LogiX
             file.Write("[");
             folderIds = Pool.BorrowHashSet<string>();
             folders = Pool.BorrowHashSet<RecordDirectory>();
+            is_fist_time = true;
             Iterate(inventory.CurrentDirectory);
             file.Write("]");
             file.Close();
@@ -63,7 +66,14 @@ namespace FrooxEngine.LogiX
                 //Debug.Log(record.Name);
                 Debug.Log(currentDirectory.Path);
                 string output = JsonConvert.SerializeObject(record);
-                file.Write(output+",");
+                if (is_fist_time)
+                {
+                    file.Write(output);
+                    is_fist_time = false;
+                } else
+                {
+                    file.Write(","+output);
+                }
                 //Debug.Log(output);
             }
             foreach (RecordDirectory subdirectory in (IEnumerable<RecordDirectory>)currentDirectory.Subdirectories)
@@ -99,6 +109,7 @@ namespace FrooxEngine.LogiX
                     //this.Iterate(i + 1);
                     folderIds.Add(folderId);
                     //folders.Add(subdirectory);
+                    Thread.Sleep(100);
                     Iterate(subdirectory);
 
                 }

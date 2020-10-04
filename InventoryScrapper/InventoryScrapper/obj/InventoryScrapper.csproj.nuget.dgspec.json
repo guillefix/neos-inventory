@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\code\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj": {}
+    "D:\\code\\neos\\neos-inventory\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj": {}
   },
   "projects": {
-    "D:\\code\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj": {
+    "D:\\code\\neos\\neos-inventory\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\code\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj",
+        "projectUniqueName": "D:\\code\\neos\\neos-inventory\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj",
         "projectName": "InventoryScrapper",
-        "projectPath": "D:\\code\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj",
+        "projectPath": "D:\\code\\neos\\neos-inventory\\InventoryScrapper\\InventoryScrapper\\InventoryScrapper.csproj",
         "packagesPath": "C:\\Users\\Guillermo Valle\\.nuget\\packages\\",
-        "outputPath": "D:\\code\\InventoryScrapper\\InventoryScrapper\\obj\\",
+        "outputPath": "D:\\code\\neos\\neos-inventory\\InventoryScrapper\\InventoryScrapper\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackagesFallback\\",
