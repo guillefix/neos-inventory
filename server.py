@@ -33,7 +33,7 @@ things3 = list(map(lambda x: sum(map(lambda y: list(map(lambda z: z.lower().stri
 len(records)
 things2 = list(filter(lambda x: x is not None, things2))
 # sentence_embeddings = model.encode(things2)
-# import numpy as np
+import numpy as np
 # np.save("sentence_embeddings",sentence_embeddings)
 ## TODO: use pre-computed embeddings for next time putting in Neos
 sentence_embeddings = np.load("sentence_embeddings.npy")
