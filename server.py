@@ -99,7 +99,8 @@ class S(BaseHTTPRequestHandler):
         indices = search(query.lower(),100)
         for i in indices:
             results_ids.append(i)
-            results_str += records[i]["ThumbnailURI"].split(".")[0]+"|"+records[i]["AssetURI"].split(".")[0]+","
+            r=records[i]
+            results_str += r["ThumbnailURI"].split(".")[0]+"|"+r["AssetURI"]+"|"+r["Name"]+"|"+r["OwnerName"]+"|"+r["Path"]+","
 
         # i = np.random.choice(results)
 
