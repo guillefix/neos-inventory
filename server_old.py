@@ -1,6 +1,5 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import re
-import numpy as np
 
 # import json
 # records = json.loads(open("InventoryScrap.txt","r",encoding="utf-8").read())
@@ -25,17 +24,17 @@ from fuzzywuzzy import process
 import re
 import json
 from collections import Counter
-records = json.loads(open("new_inventory_index.txt","r",encoding="utf-8").read())
+records = json.loads(open("InventoryScrap.txt","r",encoding="utf-8").read())
+# records = json.loads(open("intermediate_159","r",encoding="utf-8").read())
 
+# records2[0]
 records[0]
 
 len(records)
 
-things = list(map(lambda x: x["tags"], records))
-things2 = list(map(lambda x: x["name"] if "name" in x else None, records))
-things3 = list(map(lambda x: sum(map(lambda y: list(map(lambda z: z.lower().strip(), re.split(' |-|_',y))),x["path"].split("\\")),[]), records))
-
-things3
+things = list(map(lambda x: x["Tags"], records))
+things2 = list(map(lambda x: x["Name"], records))
+things3 = list(map(lambda x: sum(map(lambda y: list(map(lambda z: z.lower().strip(), re.split(' |-|_',y))),x["Path"].split("\\")),[]), records))
 
 len(records)
 things2 = list(filter(lambda x: x is not None, things2))
@@ -86,6 +85,7 @@ def search(query_str,n=3,fuzzy_weight=0.5):
 
 # things[0]
 
+import numpy as np
 #%%
 
 class S(BaseHTTPRequestHandler):
@@ -105,9 +105,7 @@ class S(BaseHTTPRequestHandler):
         indices = search(query.lower(),100)
         for i in indices:
             results_ids.append(i)
-            thumbnailUri = records[i]["thumbnailUri"].split(".")[0] if "thumbnailUri" in records[i] else ""
-            assetUri = records[i]["assetUri"].split(".")[0] if "assetUri" in records[i] else ""
-            results_str += thumbnailUri+"|"+assetUri+","
+            results_str += records[i]["ThumbnailURI"].split(".")[0]+"|"+records[i]["AssetURI"].split(".")[0]+","
 
         # i = np.random.choice(results)
 
