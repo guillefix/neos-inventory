@@ -40,7 +40,7 @@ things3
 len(records)
 things2 = list(filter(lambda x: x is not None, things2))
 # sentence_embeddings = model.encode(things2)
-# import numpy as np
+import numpy as np
 # np.save("sentence_embeddings",sentence_embeddings)
 ## TODO: use pre-computed embeddings for next time putting in Neos
 sentence_embeddings = np.load("sentence_embeddings.npy")
@@ -105,9 +105,13 @@ class S(BaseHTTPRequestHandler):
         indices = search(query.lower(),100)
         for i in indices:
             results_ids.append(i)
-            thumbnailUri = records[i]["thumbnailUri"].split(".")[0] if "thumbnailUri" in records[i] else ""
-            assetUri = records[i]["assetUri"].split(".")[0] if "assetUri" in records[i] else ""
-            results_str += thumbnailUri+"|"+assetUri+","
+            r=records[i]
+            thumbnailUri = r["thumbnailUri"].split(".")[0] if "thumbnailUri" in r else ""
+            assetUri = r["assetUri"].split(".")[0] if "assetUri" in r else ""
+            name = r["name"].split(".")[0] if "name" in r else ""
+            ownerName = r["ownerName"].split(".")[0] if "ownerName" in r else ""
+            path = r["path"].split(".")[0] if "path" in r else ""
+            results_str += thumbnailUri+"|"+assetUri+"|"+name+"|"+ownerName+"|"+path+","
 
         # i = np.random.choice(results)
 
