@@ -1,3 +1,6 @@
 InventoryScrap.txt
 sentence_embeddings.npy
 new_inventory_index.txt
+thumbnails/*
+image_embeddings_clip.npy
+sentence_embeddings_clip.npy
