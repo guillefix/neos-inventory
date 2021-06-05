@@ -16,6 +16,7 @@ from rapidfuzz import fuzz
 import re
 import json
 from collections import Counter
+import sys
 
 # import json
 # records = json.loads(open("InventoryScrap.txt","r",encoding="utf-8").read())
@@ -220,6 +221,7 @@ if __name__ == "__main__":
 
             # i = np.random.choice(results)
 
+            sys.stdout.flush()
             self.wfile.write(bytes(str(results_str), "utf-8"))
 
         def do_HEAD(self):
