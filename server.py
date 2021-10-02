@@ -232,6 +232,22 @@ if __name__ == "__main__":
             self._set_headers()
             self.wfile.write(bytes("<html><body><h1>POST!</h1></body></html>", "utf-8"))
 
+        def do_OPTIONS(self):
+            self.send_response(200, "ok")
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+            self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.end_headers()
+
+        def do_CONNECT(self):
+            self.send_response(200, "ok")
+            self.send_header('Access-Control-Allow-Origin', '*')
+            self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+            self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+            self.send_header("Access-Control-Allow-Headers", "Content-Type")
+            self.end_headers()
+
     def run(server_class=HTTPServer, handler_class=S, port=80):
         server_address = ('', port)
         httpd = server_class(server_address, handler_class)
