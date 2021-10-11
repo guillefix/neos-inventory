@@ -247,6 +247,15 @@ if __name__ == "__main__":
             self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
             self.send_header("Access-Control-Allow-Headers", "Content-Type")
             self.end_headers()
+        
+        def finish(self,*args,**kw):
+            try:
+                if not self.wfile.closed:
+                    self.wfile.flush()
+                    self.wfile.close()
+            except socket.error:
+                pass
+            self.rfile.close()
 
     def run(server_class=HTTPServer, handler_class=S, port=80):
         server_address = ('', port)
