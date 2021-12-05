@@ -43,11 +43,13 @@ model, preprocess = clip.load("ViT-B/32", device=device)
 
 def embed_image(images):
     if type(images) == str: images = [images]
+    assert len(images) > 0
     with torch.no_grad():
         batch_size = 128
         imagest = preprocess(Image.open(images[0])).unsqueeze(0).to(device)
         image_features = model.encode_image(imagest)
         for i in range(1,len(images),batch_size):
+            print(i)
             imagest = preprocess(Image.open(images[i])).unsqueeze(0).to(device)
             for image in images[i+1:i+batch_size]:
                 imagest = torch.cat([imagest,preprocess(Image.open(image)).unsqueeze(0).to(device)],0)

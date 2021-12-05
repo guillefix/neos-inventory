@@ -5,3 +5,5 @@ thumbnails/*
 image_embeddings_clip.npy
 sentence_embeddings_clip.npy
 log.txt
+new_inventory_index_old.txt
+thumbnails.tar.gz

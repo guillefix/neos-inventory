@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import re
+import os
 import numpy as np
 
 from urllib.parse import urlparse
@@ -35,6 +36,8 @@ import sys
 import numpy as np
 
 use_bert = False
+#compute_embeddings = True
+compute_embeddings = False
 def query(vec,embs,n=3):
     # index = np.argmax(np.dot(embs,vec/np.linalg.norm(vec)))
     if use_bert:
@@ -69,8 +72,12 @@ if __name__ == "__main__":
     # len(records)
 
     records = list(filter(lambda x: ("name" in x and x["name"] is not None) and ("tags" in x and x["tags"] is not None) and ("thumbnailUri" in x and x["thumbnailUri"] is not None), records))
-    bad_thumbnails = ["R-18fb0f87-a8dc-426e-85b6-835a96d74ec3","R-47e0eba3-b408-45a6-a25d-771533803680","R-72815276-5acf-4b2f-a6f4-a4ecfa7e284d","R-84e14452-9d93-449a-8c77-910c62694a03","R-8e023894-dc52-43c4-a575-e09db0e3751c","R-a8c347ef-76fc-4759-b9c8-09a6c4c02c3d","R-aa261a5b-747e-49e6-a8a2-a3dc926dc3e7","R-afa0122b-faab-4bf3-a537-938d0a053e55","R-f6fe4528-f67c-46a5-8fb2-d18fd2f471de"]
-    records = list(filter(lambda x: x["id"] not in bad_thumbnails, records))
+    #bad_thumbnails = ["R-18fb0f87-a8dc-426e-85b6-835a96d74ec3","R-47e0eba3-b408-45a6-a25d-771533803680","R-72815276-5acf-4b2f-a6f4-a4ecfa7e284d","R-84e14452-9d93-449a-8c77-910c62694a03","R-8e023894-dc52-43c4-a575-e09db0e3751c","R-a8c347ef-76fc-4759-b9c8-09a6c4c02c3d","R-aa261a5b-747e-49e6-a8a2-a3dc926dc3e7","R-afa0122b-faab-4bf3-a537-938d0a053e55","R-f6fe4528-f67c-46a5-8fb2-d18fd2f471de"]
+    #bad_thumbnails += ["R-2bc2a5ca-15af-495a-9b36-d7b6da0f96eb"]
+    def has_thumbnail(idstr):
+        return os.path.exists("thumbnails/"+idstr+".webp.jpg")
+    records = list(filter(lambda x: has_thumbnail(x["id"]), records))
+    print(len(records))
 
     tags = list(map(lambda x: x["tags"], records))
     names = list(map(lambda x: x["name"], records))
@@ -78,13 +85,15 @@ if __name__ == "__main__":
     image_thumbnails = list(map(lambda x: "thumbnails/"+x["id"]+".webp.jpg", records))
 
     len(records)
-    # image_embeddings = embed_image(image_thumbnails)
-    # sentence_embeddings = embed_text(names)
-    # sentence_embeddings = model.encode(names)
-    # np.save("sentence_embeddings",sentence_embeddings)
-    # np.save("sentence_embeddings_clip",sentence_embeddings)
-    # np.save("image_embeddings_clip",image_embeddings)
-    ## use pre-computed embeddings for next time putting in Neos
+    if compute_embeddings:
+        image_embeddings = embed_image(image_thumbnails)
+        sentence_embeddings = embed_text(names)
+        #sentence_embeddings = model.encode(names)
+        #np.save("sentence_embeddings",sentence_embeddings)
+        np.save("sentence_embeddings_clip",sentence_embeddings)
+        np.save("image_embeddings_clip",image_embeddings)
+        exit()
+    # use pre-computed embeddings for next time putting in Neos
     if use_bert:
         sentence_embeddings = np.load("sentence_embeddings.npy")
         normalized_sentence_embeddings = sentence_embeddings / np.linalg.norm(sentence_embeddings,axis=1, keepdims=True)
